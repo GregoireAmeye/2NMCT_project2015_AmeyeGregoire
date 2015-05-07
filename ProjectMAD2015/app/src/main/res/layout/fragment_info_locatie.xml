@@ -1,0 +1,46 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    tools:context="be.howest.nmct.projectmad2015.InfoLocatieFragment"
+    android:weightSum="1"
+    android:padding="10dp"
+    android:id="@+id/fragment_info_locatie">
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Naam Locatie"
+        android:id="@+id/txtNaamLocInfo" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Adres Locatie"
+        android:id="@+id/txtAdresLocInfo"
+        android:layout_marginBottom="10dp"
+        android:layout_below="@id/txtNaamLocInfo"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Beschrijving"
+        android:id="@+id/txtBeschrijvingInfo"
+        android:layout_weight="0.34"
+        android:layout_marginBottom="10dp"
+        android:layout_below="@id/txtAdresLocInfo"/>
+
+    <Button
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:id="@+id/btnMapsInfo"
+        android:layout_gravity="bottom|right"
+        android:background="@drawable/btnmap"
+        android:layout_alignParentBottom="true"
+       android:layout_alignParentRight="true"
+        />
+</RelativeLayout>

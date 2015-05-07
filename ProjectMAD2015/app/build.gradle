@@ -1,0 +1,35 @@
+apply plugin: 'com.android.application'
+
+android {
+    signingConfigs {
+        config {
+            keyAlias 'mygooglemapsapp'
+            keyPassword 'k.jfxg54'
+            storeFile file('C:/Users/Gregoire/Howest/KeyStore.jks')
+            storePassword 'k.jfxg54'
+        }
+    }
+    compileSdkVersion 21
+    buildToolsVersion "21.1.2"
+    defaultConfig {
+        applicationId "be.howest.nmct.projectmad2015"
+        minSdkVersion 21
+        targetSdkVersion 21
+        versionCode 1
+        versionName "1.0"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.config
+        }
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile 'com.google.android.gms:play-services:7.3.0'
+    //compile "com.google.android.gms:play-services-maps:7.3.0"
+    compile 'com.android.support:support-v4:21.0.+'
+}
