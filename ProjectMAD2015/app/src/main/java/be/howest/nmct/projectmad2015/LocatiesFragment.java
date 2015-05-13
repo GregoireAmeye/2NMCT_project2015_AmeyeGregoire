@@ -108,7 +108,7 @@ public class LocatiesFragment extends ListFragment {
             txtNaamLocatie.setText(loc.getNaamLocatie());
 
             TextView txtLocatieBeschr = vh.txtLocatieBeschr;
-            txtLocatieBeschr.setText(loc.getStadLocatie()+ ", "+loc.getStraatLocatie());
+            txtLocatieBeschr.setText(loc.getStadLocatie());
 
             TextView txtCategorie = vh.txtCategorie;
             txtCategorie.setText(loc.getCategorieLocatie().getCategorie());
