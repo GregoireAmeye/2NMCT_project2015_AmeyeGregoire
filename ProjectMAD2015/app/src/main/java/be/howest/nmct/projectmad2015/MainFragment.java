@@ -21,22 +21,26 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import be.howest.nmct.projectmad2015.Admin.Data;
 
 
-/**
- * A simple {@link Fragment} subclass.
- */
 public class MainFragment extends Fragment  implements OnMapReadyCallback {
-
-
-    //Button btnToonLijst;
 
     GoogleMap LocatieMap;
     public void onMapReady(GoogleMap map) {
+        setMarkers(Data.Locatie.values());
 
 
 
-        for(int i=0; i<Data.Locatie.values().length;i++)
+    }
+
+
+    private void setMarkers(Data.Locatie[] values) {
+
+        //Vorige markers verwijderen
+        LocatieMap.clear();
+
+        //markers 1 per 1 toevoegen
+        for(int i=0; i<values.length;i++)
         {
-            Data.Locatie l = Data.Locatie.values()[i];
+            Data.Locatie l = values[i];
 
             // set locatie Cursor
             double lat = Double.parseDouble(l.getLatitudeLocatie());
@@ -47,8 +51,8 @@ public class MainFragment extends Fragment  implements OnMapReadyCallback {
 
 
 
-        String name = l.getNaamLocatie();
-        String beschr = l.getBeschrijvingLocatie();
+            String name = l.getNaamLocatie();
+            String beschr = l.getBeschrijvingLocatie();
 
 
 
@@ -56,25 +60,26 @@ public class MainFragment extends Fragment  implements OnMapReadyCallback {
             switch(l.getCategorieLocatie())
             {
                 case ESCAPE:
-                    bdf = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED);
+                    bdf = BitmapDescriptorFactory.fromResource(R.drawable.test);
+                    break;
+                case SPORT:
+                    bdf = BitmapDescriptorFactory.fromResource(R.drawable.sport);
                     break;
                 case ANDERE:
-                    bdf = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE);
+                    bdf = BitmapDescriptorFactory.fromResource(R.drawable.andere);
                     break;
                 default:
-                    bdf = null;
+                    bdf = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED);
                     break;
             }
 
             LocatieMap.addMarker(new MarkerOptions()
                     .title(name)
                     .snippet(beschr).position(latlon).icon(bdf));
-            ;
+
 
         }
-
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -98,8 +103,6 @@ public class MainFragment extends Fragment  implements OnMapReadyCallback {
 
         return v;
     }
-
-
 
     private FragmentManager getFragmentManagerCorrect() {
         FragmentManager fm;
@@ -126,8 +129,6 @@ public class MainFragment extends Fragment  implements OnMapReadyCallback {
 
     private void setMapZoom()
     {
-
-
         // set locatie
         double lat = Double.parseDouble(loc.getLatitudeLocatie());
         double lng = Double.parseDouble(loc.getLongitudeLocatie());

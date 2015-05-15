@@ -10,10 +10,16 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import be.howest.nmct.projectmad2015.Admin.Data;
 
@@ -21,7 +27,7 @@ import be.howest.nmct.projectmad2015.Admin.Data;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class LocatiesFragment extends ListFragment {
+public class LocatiesFragment extends ListFragment{
 
     public LocatieAdapter la;
 
@@ -30,10 +36,10 @@ public class LocatiesFragment extends ListFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        la = new LocatieAdapter(getActivity());
+
+        List<Data.Locatie> lijstLocs = Arrays.asList(Data.Locatie.values());
+        la = new LocatieAdapter(getActivity(), lijstLocs);
         setListAdapter(la);
-
-
 
 
     }
@@ -42,8 +48,57 @@ public class LocatiesFragment extends ListFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+
         View v = inflater.inflate(R.layout.fragment_locaties, container, false);
+
+
+        Spinner spinner = (Spinner) v.findViewById(R.id.spinnerCategories);
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item);
+
+        for(int i =0; i<Data.Categorie.values().length; i++)
+        {
+            adapter.add(Data.Categorie.values()[i].getCategorie());
+        }
+
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+
+                List<Data.Locatie> lijstLocs = new ArrayList<>();
+
+
+                for(Data.Locatie loc : Data.Locatie.values())
+                {
+                    if (loc.getCategorieLocatie() == Data.Categorie.values()[position] || Data.Categorie.values()[position] == Data.Categorie.All) {
+
+                        lijstLocs.add(loc);
+                    }
+                }
+
+
+                la = new LocatieAdapter(getActivity(), lijstLocs);
+                setListAdapter(la);
+
+
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+                List<Data.Locatie> lijstLocs = Arrays.asList(Data.Locatie.values());
+                la = new LocatieAdapter(getActivity(), lijstLocs);
+                setListAdapter(la);
+
+            }
+        });
+
+        spinner.setAdapter(adapter);
 
 
 
@@ -52,13 +107,21 @@ public class LocatiesFragment extends ListFragment {
     }
 
 
+
     OnLocatieFragmentListener mListener;
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
 
         Intent intent = new Intent(getActivity().getBaseContext(),
                 InfoActivity.class);
-        intent.putExtra("key_pos", position);
+        for(int i =0; i<Data.Locatie.values().length; i++)
+        {
+            if(la.Locs.get(position) == Data.Locatie.values()[i])
+            {
+                intent.putExtra("key_pos", i);
+            }
+        }
+
         getActivity().startActivity(intent);
 
     }
@@ -81,50 +144,65 @@ public class LocatiesFragment extends ListFragment {
 
 
 
-    //Adapter
+    //Locatie Adapter
     public class LocatieAdapter extends ArrayAdapter<Data.Locatie> {
 
-        public LocatieAdapter(Context context) {
-            super(context, R.layout.row_locatie, R.id.txtLocatieNaam, Data.Locatie.values());
+        public LocatieAdapter(Context context, List<Data.Locatie> Locs) {
 
+            super(context, R.layout.row_locatie, R.id.txtLocatieNaam, Locs);
+            this.Locs = Locs;
         }
 
+        List<Data.Locatie> Locs;
         Data.Locatie loc;
         Button btnShowMaps;
         @Override
         public View getView(final int position, View convertView, ViewGroup parent) {
             View row = super.getView(position, convertView, parent);
-            loc = Data.Locatie.values()[position];
-
-            ViewHolder vh= (ViewHolder) row.getTag();
-
-            if(vh==null)
-            {
-                vh = new ViewHolder(row);
-                row.setTag(vh);
-            }
-
-            TextView txtNaamLocatie = vh.txtNaamLocatie;
-            txtNaamLocatie.setText(loc.getNaamLocatie());
-
-            TextView txtLocatieBeschr = vh.txtLocatieBeschr;
-            txtLocatieBeschr.setText(loc.getStadLocatie());
-
-            TextView txtCategorie = vh.txtCategorie;
-            txtCategorie.setText(loc.getCategorieLocatie().getCategorie());
+            loc = Locs.get(position);
 
 
-            btnShowMaps = (Button) row.findViewById(R.id.btnMaps);
-            btnShowMaps.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Data.Locatie l = Data.Locatie.values()[position];
-                    mListener.demandLatLon(l);
+
+
+                ViewHolder vh= (ViewHolder) row.getTag();
+
+                if(vh==null)
+                {
+                    vh = new ViewHolder(row);
+                    row.setTag(vh);
                 }
-            });
+
+                TextView txtNaamLocatie = vh.txtNaamLocatie;
+                txtNaamLocatie.setText(loc.getNaamLocatie());
+
+                TextView txtLocatieBeschr = vh.txtLocatieBeschr;
+                txtLocatieBeschr.setText(loc.getStadLocatie());
+
+                TextView txtCategorie = vh.txtCategorie;
+                txtCategorie.setText(loc.getCategorieLocatie().getCategorie());
 
 
-            return row;
+                btnShowMaps = (Button) row.findViewById(R.id.btnMaps);
+                btnShowMaps.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        for(int i =0; i<Data.Locatie.values().length; i++)
+                        {
+                            if(la.Locs.get(position) == Data.Locatie.values()[i])
+                            {
+                                Data.Locatie l = Data.Locatie.values()[i];
+                                mListener.demandLatLon(l);
+
+                            }
+                        }
+
+
+                    }
+                });
+
+                return row;
+
+
         }
 
         class ViewHolder {
@@ -143,5 +221,4 @@ public class LocatiesFragment extends ListFragment {
         }
 
     }
-
 }
