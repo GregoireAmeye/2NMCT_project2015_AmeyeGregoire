@@ -25,10 +25,8 @@ public class MainFragment extends Fragment  implements OnMapReadyCallback {
 
     GoogleMap LocatieMap;
     public void onMapReady(GoogleMap map) {
+
         setMarkers(Data.Locatie.values());
-
-
-
     }
 
 
@@ -52,7 +50,7 @@ public class MainFragment extends Fragment  implements OnMapReadyCallback {
 
 
             String name = l.getNaamLocatie();
-            String beschr = l.getBeschrijvingLocatie();
+            String adres = l.getStadLocatie() +", "+l.getStraatLocatie();
 
 
 
@@ -60,7 +58,7 @@ public class MainFragment extends Fragment  implements OnMapReadyCallback {
             switch(l.getCategorieLocatie())
             {
                 case ESCAPE:
-                    bdf = BitmapDescriptorFactory.fromResource(R.drawable.test);
+                    bdf = BitmapDescriptorFactory.fromResource(R.drawable.escape);
                     break;
                 case SPORT:
                     bdf = BitmapDescriptorFactory.fromResource(R.drawable.sport);
@@ -73,19 +71,23 @@ public class MainFragment extends Fragment  implements OnMapReadyCallback {
                     break;
             }
 
+
             LocatieMap.addMarker(new MarkerOptions()
                     .title(name)
-                    .snippet(beschr).position(latlon).icon(bdf));
+                    .snippet(adres).position(latlon).icon(bdf));
 
 
         }
+
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         View v = inflater.inflate(R.layout.fragment_main, container, false);
+
 
 
         MapFragment mf = (MapFragment) getFragmentManagerCorrect().findFragmentById(R.id.map);
@@ -99,7 +101,6 @@ public class MainFragment extends Fragment  implements OnMapReadyCallback {
             loc =Data.Locatie.values()[pos];
             setMapZoom();
         }
-
 
         return v;
     }
@@ -129,6 +130,7 @@ public class MainFragment extends Fragment  implements OnMapReadyCallback {
 
     private void setMapZoom()
     {
+
         // set locatie
         double lat = Double.parseDouble(loc.getLatitudeLocatie());
         double lng = Double.parseDouble(loc.getLongitudeLocatie());

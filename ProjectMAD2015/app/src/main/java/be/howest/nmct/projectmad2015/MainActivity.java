@@ -15,11 +15,11 @@ public class MainActivity extends Activity implements LocatiesFragment.OnLocatie
 
     private DrawerLayout dl;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
 
         Intent intent = getIntent();
         int pos = intent.getIntExtra("key_pos", -1);
@@ -44,7 +44,6 @@ public class MainActivity extends Activity implements LocatiesFragment.OnLocatie
         dl = (DrawerLayout) findViewById(R.id.drawer_layout);
 
 
-
     }
 
 
@@ -59,7 +58,11 @@ public class MainActivity extends Activity implements LocatiesFragment.OnLocatie
 
 
         mf.setLonLat(loc);
-        dl.closeDrawer(Gravity.LEFT);
+        try {
+            dl.closeDrawer(Gravity.LEFT);
+        }
+        catch (Exception ex)
+        {}
 
 
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();

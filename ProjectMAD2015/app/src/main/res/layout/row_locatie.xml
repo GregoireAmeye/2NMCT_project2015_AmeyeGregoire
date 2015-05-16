@@ -42,7 +42,7 @@
         android:layout_margin="20dp"
         android:id="@+id/btnMaps"
         android:layout_alignParentRight="true"
-        android:background="@drawable/btnmap"
+        android:background="@drawable/map"
         android:focusable="false"/>
 
 
