@@ -25,7 +25,17 @@ public class MainFragment extends Fragment  implements OnMapReadyCallback {
 
     GoogleMap LocatieMap;
     public void onMapReady(GoogleMap map) {
+        Bundle args = getArguments();
+        if(args==null){
 
+            //zoom instellen bij opstarten
+            LatLng latlon = new LatLng(50.8308551,4.358102);
+
+            LocatieMap.setMyLocationEnabled(true);
+            LocatieMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latlon, 7));
+        }
+
+        //markers zetten
         setMarkers(Data.Locatie.values());
     }
 
@@ -140,7 +150,8 @@ public class MainFragment extends Fragment  implements OnMapReadyCallback {
 
 
         LocatieMap.setMyLocationEnabled(true);
-        LocatieMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latlon, 20));
-        LocatieMap.animateCamera(CameraUpdateFactory.zoomTo(15), 1000, null);
+
+        LocatieMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latlon, 10));
+        LocatieMap.animateCamera(CameraUpdateFactory.zoomTo(15), 2000, null);
     }
 }
